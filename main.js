@@ -1,15 +1,18 @@
 "use strict";
+const btnSaveList = document.getElementById("btnSaveList");
+let saveListShow = false;
 const todoForm = document.getElementById("todoForm");
 const todoUl = document.getElementById("ul");
+
 let storedTodos;
 let userAllowsLocalStorage = false;
 
 // Get local storage when app is open
-(async function getLocalStorageItems() {
-  console.log("WOHO: IIFE !");
+(function getLocalStorageItems() {
+  console.log("WOHO, IIFE !");
   console.log(userAllowsLocalStorage);
-  userAllowsLocalStorage = localStorageAllowed();
-  console.log(userAllowsLocalStorage);
+  // userAllowsLocalStorage = localStorageAllowed();
+  // console.log(userAllowsLocalStorage);
 
   if (storageAvailable("localStorage") && userAllowsLocalStorage) {
     console.log("Can we use localStorage to store todos!");
@@ -44,26 +47,6 @@ function storageAvailable(type) {
       storage.length !== 0
     );
   }
-}
-//  Ask user to allow use of local storage
-function localStorageAllowed() {
-  todoForm.insertAdjacentHTML(
-    "beforebegin",
-    `
-    <div class="store-list-wr">
-      <h5>Do you want to store your list?</h5>
-      <b>Allow for access to local storage</b>
-      <span>No</span><span>Yes</span>
-      <label class="save-switch">
-        <input type="checkbox">
-        <span class="save-slider"></span>
-      </label>
-    </div>
-  `
-  );
-
-  userAnswer === "";
-  return userAnswer;
 }
 //  Ask if you can use local storage
 function addTodo(text) {
@@ -145,6 +128,48 @@ function handleTodoClick(id, type) {
   }
 }
 // event listeners
+// userAnswer ->
+function listenUserAnswer(showing) {
+  if (showing) {
+    const userAnswer = document.getElementById("save-checkbox");
+
+    userAnswer.addEventListener("click", (e) => {
+      console.log(e.target);
+
+      let checkedValue = document.querySelector("save-checkbox").checked;
+      console.log(checkedValue);
+    });
+  } else {
+    // remove event listners from checkbox
+  }
+}
+
+btnSaveList.addEventListener("click", (e) => {
+  listenUserAnswer(saveListShow);
+  const storeListWr = document.getElementById("storeListWr");
+  if (saveListShow) {
+    let storeList = storeListWr.children[1];
+    storeList.parentNode.removeChild(storeList);
+    saveListShow = false;
+  } else {
+    storeListWr.insertAdjacentHTML(
+      "beforeend",
+      `
+        <div class="store-list">
+          <b>Allow for access to local storage to save your list</b>
+          <span>No - Yes</span>
+          <label class="save-switch">
+          <input type="checkbox" id="save-checkbox">
+          <span class="save-slider"></span>
+          </label>
+        </div>
+        `
+    );
+    saveListShow = true;
+  }
+});
+
+// put in functions
 // form submitted
 todoForm.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -158,7 +183,7 @@ todoForm.addEventListener("submit", (e) => {
     todoInput.focus();
   }
 });
-// ul
+// ul click
 todoUl.addEventListener("click", (e) => {
   e.preventDefault();
   let liId = e.target.parentNode["id"];

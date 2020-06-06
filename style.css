@@ -1,9 +1,13 @@
+.store-store + .show {
+  display: none;
+}
 .store-list-wr {
   padding: 1em;
   display: flex;
-  flex-flow: column;
-  justify-content: space-around;
-  align-items: space-between;
+  flex-flow: column nowrap;
+}
+.store-list-wr button {
+  width: 6em;
 }
 .save-switch {
   position: relative;
