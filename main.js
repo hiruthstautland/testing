@@ -1,27 +1,38 @@
 "use strict";
-const btnSaveList = document.getElementById("btnSaveList");
-let saveListShow = false;
-const todoForm = document.getElementById("todoForm");
-const todoUl = document.getElementById("ul");
+import {
+  showSavedTodos,
+  addTodo,
+  showTodo,
+  showSaveBtn,
+  deleteTodo,
+  checkTodo,
+  handleTodoClick,
+} from "./todoList.js";
 
-let storedTodos;
+const btnStoreList = document.getElementById("btnStoreList");
+let saveListShowing = false;
+
+// let displayedTodos = [{ text: "handle", checked: false, id: "12.12" }];
 let userAllowsLocalStorage = false;
 
-// Get local storage when app is open
-(function getLocalStorageItems() {
-  console.log("WOHO, IIFE !");
-  console.log(userAllowsLocalStorage);
-  // userAllowsLocalStorage = localStorageAllowed();
-  // console.log(userAllowsLocalStorage);
+// // Get local storage once app is open
+// (function getLocalStorageItems() {
+//   // running();
+//   userAllowsLocalStorage = localStorageAllowed();
+//   // console.log(userAllowsLocalStorage);
 
-  if (storageAvailable("localStorage") && userAllowsLocalStorage) {
-    console.log("Can we use localStorage to store todos!");
-    storedTodos = JSON.parse(localStorage.getItem("myTodoItems")) || [];
-  } else {
-    // show message
-    console.log("Too bad, we won't be able to store your list in for later!");
-  }
-})();
+//   if (storageAvailable("localStorage") && userAllowsLocalStorage) {
+//     showSavedTodos();
+//     // console.log("Can we use localStorage to store todos!");
+//     // displayedTodos = JSON.parse(localStorage.getItem("myTodoItems")) || [];
+//   } else {
+//     // show message in UI
+//     console.log("Too bad, we won't be able to store your list in for later!");
+//   }
+// })();
+
+// function askForCookieConcent
+
 //  Check if local storage is available
 function storageAvailable(type) {
   let storage;
@@ -30,9 +41,10 @@ function storageAvailable(type) {
     let storageTest = "__storage_test__";
     storage.setItem(storageTest, storageTest);
     storage.removeItem(storageTest);
-    console.log("Local is available!");
+    // console.log("Local storage is available!");
     return true;
   } catch (e) {
+    btnSaveList.disabled = true;
     return (
       e instanceof DOMException &&
       // exept Firefox
@@ -49,149 +61,61 @@ function storageAvailable(type) {
   }
 }
 //  Ask if you can use local storage
-function addTodo(text) {
-  const todo = {
-    text,
-    checked: false,
-    id: Date.now(),
-  };
-
-  storedTodos = JSON.parse(localStorage.getItem("myTodoItems"));
-
-  // check if local storage has any toado items
-  if (storedTodos === []) {
-    localStorage.setItem("myTodoItems", JSON.stringify(todo));
+function localStorageAllowed() {
+  const saveCheckbox = document.getElementById("saveCheckbox");
+  let isChecked = saveCheckbox.checked;
+  saveCheckbox.addEventListener("click", (e) => {
+    isChecked = e.target.checked;
+    saveInLocalStorage(isChecked);
+  });
+  if (isChecked) {
   } else {
-    console.log(storedTodos);
-
-    // let newStorage = storedTodos.push(todo);
-    // console.log(newStorage);
-
-    localStorage.setItem("myTodoItems", JSON.stringify(todo));
-  }
-
-  showTodo(todo);
-  // console.log(newStorage);
-}
-
-function showTodo(todo) {
-  todoUl.insertAdjacentHTML(
-    "beforeend",
-    `
-    <li class="todo-li" id="${todo.id}" >
-      <label for="checkbox-item" class="label-todo"></label>
-      <input id="checkbox-item" type="checkbox" class="checked"/> 
-      <span>${todo.text}</span>
-      <button class="delete">X</button>
-    </li>
-  `
-  );
-}
-
-function deleteTodo(itemIndex, id) {
-  // Delete from "data base" todoItems arr
-  todoItems = todoItems.filter((itemObj, index) => {
-    return index !== itemIndex;
-  });
-  // Normally this would be a call to the data base.
-  // We would then await the answer, if not success set error and throw it
-
-  // remove from UI, remember don't delete if it cant be removed from Ui
-  let deleteElement = document.getElementById(id);
-  deleteElement.parentNode.removeChild(deleteElement);
-}
-
-function checkTodo(todoIndex) {
-  todoItems[todoIndex].checked = !todoItems[todoIndex].checked;
-  let todoId = todoItems[todoIndex].id;
-  let todoItem = document.getElementById(todoId);
-
-  todoItems[todoIndex].checked
-    ? todoItem.classList.add("done")
-    : todoItem.classList.remove("done");
-}
-
-function handleTodoClick(id, type) {
-  let todoIndex = todoItems.findIndex((item) => {
-    return item.id == id;
-  });
-
-  switch (type) {
-    case "checked":
-      checkTodo(todoIndex);
-      break;
-    case "delete":
-      deleteTodo(todoIndex, id);
-      break;
-    default:
-      break;
+    alert("Press the store list button to store list");
   }
 }
+
 // event listeners
-// userAnswer ->
-function listenUserAnswer(showing) {
-  if (showing) {
-    const userAnswer = document.getElementById("save-checkbox");
-
-    userAnswer.addEventListener("click", (e) => {
-      console.log(e.target);
-
-      let checkedValue = document.querySelector("save-checkbox").checked;
-      console.log(checkedValue);
-    });
-  } else {
-    // remove event listners from checkbox
-  }
-}
-
-btnSaveList.addEventListener("click", (e) => {
-  listenUserAnswer(saveListShow);
+btnStoreList.addEventListener("click", (e) => {
   const storeListWr = document.getElementById("storeListWr");
-  if (saveListShow) {
-    let storeList = storeListWr.children[1];
-    storeList.parentNode.removeChild(storeList);
-    saveListShow = false;
+  if (saveListShowing) {
+    storeListWr.children[1].remove();
+    saveListShowing = false;
   } else {
     storeListWr.insertAdjacentHTML(
       "beforeend",
       `
-        <div class="store-list">
-          <b>Allow for access to local storage to save your list</b>
-          <span>No - Yes</span>
-          <label class="save-switch">
-          <input type="checkbox" id="save-checkbox">
-          <span class="save-slider"></span>
-          </label>
-        </div>
-        `
+        <div class="save-list">
+        <b>Allow for access to local storage to save your list?</b>
+        <div class="save-on-off-label"><span>No</span>  <span>Yes</span></div>
+            <label class="save-switch">
+            <input name="save-list" type="checkbox" id="saveCheckbox">
+            <span class="save-slider"></span>
+            </label>
+            </div>
+            `
     );
-    saveListShow = true;
+    saveListShowing = true;
+    localStorageAllowed();
   }
 });
 
-// put in functions
-// form submitted
-todoForm.addEventListener("submit", (e) => {
-  e.preventDefault();
+// // ul click
+// todoUl.addEventListener("click", (e) => {
+//   e.preventDefault();
+//   let liId = e.target.parentNode["id"];
 
-  const todoInput = document.getElementById("todo");
-  const textInput = todoInput.value.trim();
-
-  if (textInput !== "") {
-    addTodo(textInput);
-    todoInput.value = "";
-    todoInput.focus();
-  }
-});
-// ul click
-todoUl.addEventListener("click", (e) => {
-  e.preventDefault();
-  let liId = e.target.parentNode["id"];
-
-  if (e.target.classList.contains("checked")) {
-    handleTodoClick(liId, "checked");
-  }
-  if (e.target.classList.contains("delete")) {
-    handleTodoClick(liId, "delete");
-  }
-});
+//   if (e.target.classList.contains("checked")) {
+//     handleTodoClick(liId, "checked");
+//   }
+//   if (e.target.classList.contains("btn-delete")) {
+//     handleTodoClick(liId, "delete");
+//   }
+// });
+function running() {
+  window.addEventListener("beforeunload", function (e) {
+    e.preventDefault();
+    // lagre lister til local storage?
+    console.log("hello");
+    e.returnValue = "hello";
+  });
+}

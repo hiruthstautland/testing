@@ -3,26 +3,40 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="style.css" >
+    <link rel="stylesheet" type="text/css" href="style.css" />
     <title>Document</title>
   </head>
   <body>
-  <body>
-    <div class="store-list-wr" id="storeListWr">
-      <button id="btnSaveList">Save List</button>
+    <div class="main">
+      <div class="store-list-wr" id="storeListWr">
+        <button class="btn-store-list" id="btnStoreList">Store List</button>
+      </div>
+      <div class="todo-wr">
+        <form id="todoForm" class="todo-form">
+          <label>Todo</label>
+          <input
+            autocomplete="off"
+            autofocus
+            type="text"
+            name="todo"
+            id="todo"
+            aria-label="Add new todo"
+            placeholder="Add new todo"
+          />
+          <button type="submit" class="btn-submit">Legg til</button>
+        </form>
+        <ul id="ul" class="todo-ul"></ul>
+        <div class="empty-state-wr">
+          <h2 class="empty-state__title">Add your first todo</h2>
+          <p class="empty-state__description">
+            What do you want to get done today?
+          </p>
+        </div>
+      </div>
+      <div id="countPairsInArray"></div>
     </div>
-    <div class="todo-wr">
-      <form id="todoForm" class="todo-form">
-        <label>Todo</label>
-          <input autocomplete="off" autofocus type="text" name="todo" id="todo" aria-label="Add new todo" placeholder="Add new todo">
-          <button type="submit" class="submit-button"> Legg til</button>
-      </form>
-      <ul id="ul" class="todo-ul">
-      </ul>
-    </div>
-    <div id="countPairsInArray"></div>
     <!-- <div id="cpuntPairsInArray"></div> -->
-    <script src="main.js"></script>
+    <script src="main.js" type="module"></script>
     <script src="testing.js"></script>
   </body>
 </html>

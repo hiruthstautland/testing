@@ -1,18 +1,34 @@
-.store-store + .show {
+/* main */
+.main {
+  display: flex;
+  padding: 1em;
+}
+/* Store list */
+.store-list-wr {
+  width: 8em;
+}
+.btn-store-list:hover {
+  cursor: pointer;
+}
+.show {
   display: none;
 }
-.store-list-wr {
-  padding: 1em;
+.save-list {
   display: flex;
-  flex-flow: column nowrap;
+  flex-flow: column;
+  margin: 0.5em 0;
+  font-size: 11px;
 }
-.store-list-wr button {
+.save-on-off-label {
+  display: flex;
+  justify-content: space-between;
   width: 6em;
 }
 .save-switch {
+  margin: 0.2em;
   position: relative;
   display: inline-block;
-  width: 8em;
+  width: 6em;
   height: 1em;
 }
 .save-switch input {
@@ -23,6 +39,7 @@
 .save-slider {
   position: absolute;
   cursor: pointer;
+  border-radius: 25px;
   top: 0;
   left: 0;
   right: 0;
@@ -34,10 +51,11 @@
 .save-slider:before {
   position: absolute;
   content: "";
+  border-radius: 50%;
   height: 0.8em;
   width: 0.8em;
   left: 1px;
-  bottom: 2px;
+  bottom: 1.5px;
   background-color: white;
   -webkit-transition: 0.4s;
   transition: 0.4s;
@@ -48,13 +66,12 @@
 .save-switch input:focus + .save-slider {
   box-shadow: 0 0 1px green;
 }
-
 .save-switch input:checked + .save-slider:before {
-  -webkit-transform: translateX(7em);
-  -ms-transform: translateX(7em);
-  transform: translateX(7em);
+  -webkit-transform: translateX(5em);
+  -ms-transform: translateX(5em);
+  transform: translateX(5em);
 }
-
+/* Todo  */
 .todo-wr {
   display: flex;
   flex-flow: column;
@@ -64,12 +81,12 @@
 label {
   display: none;
 }
-.submit-button {
+.btn-submit-button {
   background: grey;
   color: whitesmoke;
   border: 2px solid grey;
 }
-.submit-button:hover {
+.btn-submit:hover {
   cursor: pointer;
   background: lightgrey;
   border: 2px solid lightgrey;
@@ -78,6 +95,9 @@ label {
 .todo-ul {
   padding: 0;
 }
+.todo-ul:empty {
+  display: none;
+}
 .todo-li {
   width: 210px;
   display: flex;
@@ -85,7 +105,16 @@ label {
   padding: 0.4em;
   border-bottom: 1px solid lightgrey;
 }
-
 .done span {
   text-decoration: line-through;
+}
+/* Empty state list */
+.empty-state-wr {
+  display: none;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+}
+.todo-ul:empty + .empty-state-wr {
+  display: flex;
 }
