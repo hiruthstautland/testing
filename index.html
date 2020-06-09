@@ -9,10 +9,13 @@
   <body>
     <div class="main">
       <div class="store-list-wr" id="storeListWr">
-        <button class="btn-store-list" id="btnStoreList">Store List</button>
+        <button class="btn btn-store-list" id="btnStoreList">Store List</button>
       </div>
-      <div class="todo-wr">
-        <form id="todoForm" class="todo-form">
+      <button class="btn btn-todo-list" id="btnTodoList" type="button">
+        Show Todo List
+      </button>
+      <div class="todo-wr hide" id="todoWr">
+        <form id="todoForm" class="todo-form" onSubmit="return false;">
           <label>Todo</label>
           <input
             autocomplete="off"
@@ -23,7 +26,7 @@
             aria-label="Add new todo"
             placeholder="Add new todo"
           />
-          <button type="submit" class="btn-submit">Legg til</button>
+          <button type="submit" class="btn btn-submit">Legg til</button>
         </form>
         <ul id="ul" class="todo-ul"></ul>
         <div class="empty-state-wr">

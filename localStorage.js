@@ -1,22 +1,25 @@
 let userAllowsLocalStorage = false;
+//  Render stored items
 
-function saveInLocalStorage() {
+const connectLocalStorage = (() => {
   let newLocalStorage = [];
-  console.log(displayedTodos);
+  // console.log(todos);
 
   function saveNewObj(obj) {
+    // console.log("save new obj", obj);
     newLocalStorage.push(obj);
     localStorage.setItem("myTodoItems", JSON.stringify(newLocalStorage));
   }
 
-  function removeObj(index) {
-    newLocalStorage = todoItems.filter((itemObj, index) => {
-      return index !== itemIndex;
-    });
-    localStorage.setItem("myTodoItems", JSON.stringify(obj));
+  function removeObj() {
+    // newLocalStorage = todoItems.filter((itemObj, index) => {
+    //   return index !== itemIndex;
+    // });
+    localStorage.setItem("myTodoItems", JSON.stringify({}));
   }
 
   function getLocalStorage() {
+    // console.log("get local ");
     return JSON.parse(localStorage.getItem("myTodoItems"));
   }
   return {
@@ -24,4 +27,5 @@ function saveInLocalStorage() {
     removeObj,
     getLocalStorage,
   };
-}
+})();
+export { connectLocalStorage };

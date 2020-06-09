@@ -7,12 +7,10 @@
 .store-list-wr {
   width: 8em;
 }
-.btn-store-list:hover {
+.btn:hover {
   cursor: pointer;
 }
-.show {
-  display: none;
-}
+
 .save-list {
   display: flex;
   flex-flow: column;
@@ -72,11 +70,14 @@
   transform: translateX(5em);
 }
 /* Todo  */
+.btn-todo-list {
+  height: 1.7em;
+  width: 10em;
+}
 .todo-wr {
   display: flex;
   flex-flow: column;
   align-items: center;
-  width: 100%;
 }
 label {
   display: none;
@@ -117,4 +118,8 @@ label {
 }
 .todo-ul:empty + .empty-state-wr {
   display: flex;
+}
+/* Show element */
+.hide {
+  display: none;
 }
